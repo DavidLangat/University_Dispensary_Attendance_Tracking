@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Dashboard</title>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css">
+   
+</head>
+
+<body class="bg-gray-200">
+   <div class="flex h-screen">
+      <!-- Side Navigation Bar -->
+      <div class="bg-blue-500 text-white w-1/6">
+         <div class="p-4">
+            <h1 class="text-2xl font-bold">DHNS</h1>
+         </div>
+         <ul class="space-y-2 mt-4">
+            <li class="p-2">
+               <a class="block hover:bg-blue-700 rounded" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="p-2">
+               <a class="block hover:bg-blue-700 rounded" href="/register">Register</a>
+            </li>
+            <li class="p-2">
+               <a class="block hover:bg-blue-700 rounded" href="/medical-records">Medical Records</a>
+            </li>
+            <!-- Add more navigation links as needed -->
+         </ul>
+      </div>
+
+      <!-- Content Area -->
+      <div class="w-5/6">
+         <!-- Header -->
+         <header class="bg-white p-4 shadow">
+            <h1 class="text-2xl font-bold">Dashboard</h1>
+         </header>
+
+         <!-- Main Content -->
+         <div class="p-4">
+            {% if state == 'dashboard' %}
+               <!-- Content for the Dashboard state -->
+                <div class="p-4">
+                    <!-- Responsive Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                       <div class="bg-blue-500 text-white p-4 rounded shadow">
+                          <h2 class="text-lg font-bold">Card 1</h2>
+                          <p>This is the content of Card 1.</p>
+                       </div>
+                       <div class="bg-green-500 text-white p-4 rounded shadow">
+                          <h2 class="text-lg font-bold">Card 2</h2>
+                          <p>This is the content of Card 2.</p>
+                       </div>
+                       <div class="bg-yellow-500 text-white p-4 rounded shadow">
+                          <h2 class="text-lg font-bold">Card 3</h2>
+                          <p>This is the content of Card 3.</p>
+                       </div>
+                       <div class="bg-red-500 text-white p-4 rounded shadow">
+                          <h2 class="text-lg font-bold">Card 4</h2>
+                          <p>This is the content of Card 4.</p>
+                       </div>
+                    </div>
+        
+                    <!-- Member List -->
+                   <!-- Member List -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-bold">Member List</h2>
+            <table class="mt-4 w-full">
+               <thead>
+                  <tr>
+                     <th class="px-4 py-2">ID</th>
+                     <th class="px-4 py-2">Name</th>
+                     <th class="px-4 py-2">Email</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- Dummy data for member list -->
+                  <tr>
+                     <td class="border px-4 py-2">1</td>
+                     <td class="border px-4 py-2">John Doe</td>
+                     <td class="border px-4 py-2">john@example.com</td>
+                  </tr>
+                  <tr>
+                     <td class="border px-4 py-2">2</td>
+                     <td class="border px-4 py-2">Jane Smith</td>
+                     <td class="border px-4 py-2">jane@example.com</td>
+                  </tr>
+                  <!-- Add more rows as needed -->
+               </tbody>
+            </table>
+         </div>
+         
+               </div>
+            {% elif state == 'register' %}
+               <!-- Content for the Register state -->
+               <div class="container mx-auto py-8">
+                  <h1 class="text-2xl font-bold mb-4">Registration</h1>
+                  <form id="registration-form" method="POST" action="{{ url_for('register') }}">
+                     <div class="mb-4">
+                        <label class="block font-bold" for="name">Name:</label>
+                        <input class="w-full px-4 py-2 rounded border" type="text" name="name" id="name" required>
+                     </div>
+                     <div class="mb-4">
+                        <label class="block font-bold" for="number">Staff or Student Number:</label>
+                        <input class="w-full px-4 py-2 rounded border" type="text" name="number" id="number" required>
+                     </div>
+                     <div class="mb-4">
+                        <label class="block font-bold" for="member_type">Member Type:</label>
+                        <select class="w-full px-4 py-2 rounded border" name="member_type" id="member_type" required>
+                           <option value="student">Student</option>
+                           <option value="staff">Staff</option>
+                        </select>
+                     </div>
+                     <div class="mb-4 transition-all duration-500" id="password-section">
+                        <label class="block font-bold" for="password">Password:</label>
+                        <input class="w-full px-4 py-2 rounded border" type="password" name="password" id="password" required>
+                     </div>
+                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded" type="submit">Register</button>
+                  </form>
+               </div>
+            
+               <script>
+                  const memberTypeSelect = document.getElementById('member_type');
+                  const passwordSection = document.getElementById('password-section');
+            
+                  memberTypeSelect.addEventListener('change', () => {
+                     if (memberTypeSelect.value === 'staff') {
+                        passwordSection.classList.add('opacity-0', 'h-0');
+                        passwordSection.setAttribute('disabled', 'disabled');
+                     } else {
+                        passwordSection.classList.remove('opacity-0', 'h-0');
+                        passwordSection.removeAttribute('disabled');
+                     }
+                  });
+               </script>
+            
+            
+            {% elif state == 'medical-records' %}
+               <!-- Content for the Medical Records state -->
+               <div class="bg-white p-4 rounded shadow">
+                  <h2 class="text-lg font-bold">Medical Records</h2>
+                  <!-- Add your medical records display here -->
+               </div>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>
