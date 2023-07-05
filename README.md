@@ -20,7 +20,7 @@ The University Dispensary Attendance Tracking Application is a Python-based solu
 1. Clone the repository:
 
 ```
-git clone [https://github.com/DavidLangat/repository.git](https://github.com/DavidLangat/University_Dispensary_Attendance_Tracking.git)
+git clone https://github.com/DavidLangat/University_Dispensary_Attendance_Tracking.git
 ```
 
 2. Create a virtual environment:
