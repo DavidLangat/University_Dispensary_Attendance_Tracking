@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="p-8 lg:w-1/2 mx-auto">
+    <div class="bg-white rounded-t-lg p-8">
+     
+      <h2 class="text-3xl font-bold mb-4">Admin Profile</h2>
+      <div class="mb-4">
+        <p><strong><i class="fas fa-user"></i> Username:</strong> {{ admin[1] }}</p>
+        <p><strong><i class="fas fa-envelope"></i> Role:</strong> {{ admin[3] }}</p>
+      </div>
+      <div class="flex items-center mt-6">
+  
+        <a href="/change-password" class="block w-full py-2 px-4 text-sm uppercase rounded bg-red-500 hover:bg-red-600 text-white font-medium shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 text-center">
+          <i class="fas fa-key"></i> Change Password
+        </a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
