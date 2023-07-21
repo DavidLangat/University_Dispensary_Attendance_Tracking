@@ -1,27 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Medical Records</h2>
-  {% if records %}
-    <table>
-      <thead>
-        <tr>
-          <th>Check-in Time</th>
-          <th>Check-out Time</th>
-          <th>Reason</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for record in records %}
-          <tr>
-            <td>{{ record[4] }}</td>
-            <td>{{ record[5] if record[5] else 'Not checked out' }}</td>
-            <td>{{ record[3] }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>No medical records found for the student.</p>
-  {% endif %}
+
 {% endblock %}

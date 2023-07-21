@@ -1,43 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-  {% for message in messages %}
 
-  <div class="flex w-full  rounded-lg">
-    <div class="bg-green-600 py-4 px-6 rounded-l-lg flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="text-white fill-current" viewBox="0 0 16 16" width="20" height="20"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
-    </div>
-    <div class="px-4 py-6 bg-white rounded-r-lg flex justify-between items-center w-full border border-l-transparent border-gray-200">
-        <div> {{ message }}</div>
-
-    </div>
-  </div>
-  {% endfor %}
-{% endif %}
-{% endwith %}
-<div class="p-8 lg:w-1/2 mx-auto">
-  <div class="bg-white rounded-t-lg p-8">
-  <p class="text-center text-sm text-gray-400 font-light">Admin Registration</p>
-  <form action="/adminregister" method="POST" class="space-y-4">
-    <div>
-      <label for="username" class="block font-bold">Username:</label>
-      <input type="text" id="username" name="username" required class="border border-gray-300 rounded px-4 py-2 w-full">
-    </div>
-    <div>
-      <label for="password" class="block font-bold">Password:</label>
-      <input type="password" id="password" name="password" required class="border border-gray-300 rounded px-4 py-2 w-full">
-    </div>
-    <div>
-      <label for="role" class="block font-bold">Department:</label>
-  
-      <input type="text" id="role" name="role" required class="border border-gray-300 rounded px-4 py-2 w-full">
-
-    </div>
-    <button type="submit" class="block w-full py-2 px-4 text-sm uppercase rounded bg-red-500 hover:bg-red-600 text-white font-medium shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
-      Register</button>
-  </form>
-</div>
-</div>
 {% endblock %}
