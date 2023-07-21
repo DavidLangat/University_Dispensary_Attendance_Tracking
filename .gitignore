@@ -1,2 +1,5 @@
-.venv
-.vscode
+# Ignore virtual environment folder
+.venv/
+
+# Ignore Visual Studio Code workspace files
+.vscode/
