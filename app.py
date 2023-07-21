@@ -5,7 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 
 # Create the Flask app and set a secret key for session management
-
+app = Flask(__name__)
+app.secret_key = 'your_secret_key' 
+bootstrap = Bootstrap(app)
 
 # Establish a connection to the MySQL database
 
