@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="p-8 lg:w-1/2 mx-auto">
+  <div class="bg-white rounded-t-lg p-8">
+    <h2 class="text-3xl font-bold mb-4">Edit Admin</h2>
+      <form action="" method="post">
+      <div class="mb-4">
+        <label for="username" class="block font-bold mb-2">Username:</label>
+        <input type="text" id="username" name="username" required class="border border-gray-300
+        rounded px-4 py-2 w-full" value="{{ admin[1] }}" />
+          <label for="username" class="block font-bold mb-2">Role:</label>
+            <input type="text" id="role" name="role" required class="border border-gray-300 rounded
+            px-4 py-2 w-full" value="{{ admin[3] }}" />
+            </div>
+      <button type="submit" class="block w-full py-2 px-4 text-sm uppercase rounded bg-red-500
+      hover:bg-red-600 text-white font-medium shadow-md hover:shadow-lg transition transform hover:-
+      translate-y-0.5">Update</button>
+      </form>
+  </div>
+  </div>
 {% endblock %}
