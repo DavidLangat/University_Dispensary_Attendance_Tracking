@@ -37,11 +37,49 @@ def home():
 
 
 # Route to handle student registration
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+     if request.method == 'POST':
+     name = request.form['name']
+     student_id = request.form['student_id']
+     department = request.form['department']
+     email = request.form['email']
+     phone = request.form['phone']
+     cursor.execute('INSERT INTO students (name, student_id, department, email, phone) 
+    VALUES (%s, %s, %s, %s, %s)',
+     (name, student_id, department, email, phone))
+     db.commit()
+     flash('Registration successful!', 'success')
+     return redirect('/register')
+     return render_template(‘studentreg.html')
 
 
 
 # Route to handle user login
-
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+     if request.method == 'POST':
+     # Retrieve username and password from the login form
+     username = request.form['username']
+     password = request.form['password'] 
+     test = check_password(password, 'hashed_password')
+     password1 = generate_hashed_password(password)
+     
+     # Check if the user exists in the database
+     cursor.execute(
+     'SELECT * FROM users WHERE username = %s ', (username,))
+     user = cursor.fetchone()
+     
+     if user:
+     test = check_password(password, user[2])
+     session['username'] = user[1] 
+     if test:
+     return redirect('/dashboard')
+     else:
+     flash('Check your username or Password', 'error')
+     else:
+     flash('Check your username or Password', 'error')
+     return render_template('login.html')
 
 # Route to handle user logout
 @app.route('/logout')
@@ -117,6 +155,18 @@ def dashboard():
 
 
 # Route to handle admin registration
+    @app.route('/adminregister', methods=['GET', 'POST'])
+    def adminregister():
+     if request.method == 'POST':
+     username = request.form['username']
+     password1 = request.form['password']
+     password = generate_hashed_password(password1)
+     role = request.form['role']
+     cursor.execute('INSERT INTO users (username, password, role) VALUES (%s, %s, %s)', 
+    (username, password, role))
+     db.commit()
+     flash('Registration successful!', 'success')
+     return render_template('register.html')
 
 
 # Route to display reports for administrators
