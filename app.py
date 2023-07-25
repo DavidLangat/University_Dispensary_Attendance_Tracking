@@ -197,16 +197,63 @@ if 'username' not in session:
 return redirect('/login')
 
 # Route to delete an admin by ID
-
+@app.route('/delete-admin/<int:admin_id>', methods=['POST'])
+def delete_admin(admin_id):
+if 'username' not in session:
+return redirect('/login')
+# Delete the admin from the database
+cursor.execute('DELETE FROM users WHERE id = %s', (admin_id,))
+db.commit()
+flash('Admin deleted successfully!', 'success')
+return redirect('/view-members')
 
 # Route to view all registered members (students and admins)
-
+@app.route('/view-members')
+def view_members():
+if 'username' not in session:
+return redirect('/login')
+# Fetch all student members
+cursor.execute('SELECT * FROM students')
+students = cursor.fetchall()
+# Fetch all admin members
+cursor.execute('SELECT * FROM users')
+admins = cursor.fetchall()
+return render_template('view_members.html', students=students, admins=admins)
 
 # Route to display the student edit form
-
+@app.route('/edit-student/<int:student_id>', methods=['GET', 'POST'])
+def edit_student(student_id):
+if 'username' not in session:
+return redirect('/login')
+# Fetch the student data by ID
+cursor.execute('SELECT * FROM students WHERE id = %s', (student_id,))
+student = cursor.fetchone()
+if request.method == 'POST':
+# Get the updated data from the form
+# NAME STUDENT ID DEPARTMENT EMAIL MOBILE NUMBER
+name = request.form['name']student_id = request.form['student_id']
+department = request.form['department']
+email = request.form['email']
+phone = request.form['phone']
+# Update the student data in the database
+cursor.execute('UPDATE students SET name = %s, student_id = %s, department = %s, email =
+%s, phone = %s WHERE student_id = %s',
+(name, student_id, department, email, phone, student_id))
+db.commit()
+flash('Student updated successfully!', 'success')
+return redirect('/view-members')
+return render_template('edit_student.html', student=student)
 
 # Route to delete a student by ID
-
+@app.route('/delete-student/<int:student_id>', methods=['POST'])
+def delete_student(student_id):
+if 'username' not in session:
+return redirect('/login')
+# Delete the student from the database
+cursor.execute('DELETE FROM students WHERE id = %s', (student_id,))
+db.commit()
+flash('Student deleted successfully!', 'success')
+return redirect('/view-members')
 # Route to display the admin profile details
 
 # Route to handle admin password change
