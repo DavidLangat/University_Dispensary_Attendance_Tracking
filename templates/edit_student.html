@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  
+  <div class="p-8 lg:w-1/2 mx-auto">
+  <div class="bg-white rounded-t-lg p-8">
+    <h2 class="text-3xl font-bold mb-4">Edit Student</h2>
+  <form action="" method="post">
+  <div class="mb-4">
+  <label for="name" class="block font-bold mb-2">Name:</label>
+  <input type="text" id="name" name="name" required class="border border-gray-300
+  rounded px-4 py-2 w-full" value="{{ student[1] }}" />
+  </div>
+    <div class="mb-4">
+    <label for="student_id" class="block font-bold mb-2">Student ID:</label>
+    <input type="text" id="student_id" name="student_id" required class="border border-
+    gray-300 rounded px-4 py-2 w-full" value="{{ student[2] }}" />
+    </div>
+    <div class="mb-4">
+    <label for="department" class="block font-bold mb-2">Department:</label>
+    <input type="text" id="department" name="department" required class="border border-
+    gray-300 rounded px-4 py-2 w-full" value="{{ student[3] }}" />
+    </div>
+    <div class="mb-4">
+    <label for="email" class="block font-bold mb-2">Email:</label>
+    <input type="text" id="email" name="email" required class="border border-gray-300
+    rounded px-4 py-2 w-full" value="{{ student[4] }}" /></div>
+    <div class="mb-4">
+    <label for="phone" class="block font-bold mb-2">Mobile Number:</label>
+    <input type="text" id="phone" name="phone" required class="border border-gray-300
+    rounded px-4 py-2 w-full" value="{{ student[5] }}" />
+    </div>
+    <button type="submit" class="block w-full py-2 px-4 text-sm uppercase rounded bg-red-500
+    hover:bg-red-600 text-white font-medium shadow-md hover:shadow-lg transition transform hover:-
+    translate-y-0.5">Update</button>
+    </form>
+    </div>
+    </div>
 {% endblock %}

@@ -1,5 +1,93 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h2 class="text-3xl font-bold mb-4">All Members</h2>
+{% for message in get_flashed_messages(with_categories=True) %}
+  <div class=" px-4 py-6 bg-white rounded-r-lg flex justify-between items-center w-full border
+  border-l-transparent border-gray-200">
+  <p class=" font-black text-xs text-center w-full
+  {% if message[0] == 'success' %}
+  text-green-600
+  {% else %}
+  text-red-600
+  {% endif %}
+  "> {{ message[1] }}</p>
+  </div>
+{% endfor %}
+<h3 class="text-xl font-bold mb-2">Students</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+    <tr>
+    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Name</th>
+    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Student ID</th>
+    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Department</th>
+    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Email</th>
+    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Mobile Number</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+    tracking-wider">Actions</th>
+    </tr>
+    </thead>
+    <!-- [(1, 'Dave', '1234', 'BSC', '123@gmail.com', '123456789')] -->
+    <tbody class="bg-white divide-y divide-gray-200">
+    {% for student in students %}
+      <tr>
+      <td class="px-6 py-4 whitespace-nowrap">{{ student[1] }}</td>
+      <td class="px-6 py-4 whitespace-nowrap">{{ student[2]}}</td>
+      <td class="px-6 py-4 whitespace-nowrap">{{ student[3]}}</td>
+      <td class="px-6 py-4 whitespace-nowrap">{{ student[4]}}</td>
+      <td class="px-6 py-4 whitespace-nowrap">{{ student[5]}}</td>
+      <td class="px-6 py-4 whitespace-nowrap">
+      <a href="/edit-student/{{ student[0] }}" class="text-blue-600">
+      <i class="fas fa-edit"></i>
+      </a>
+      <form action="/delete-student/{{ student[0] }}" method="post" style="display: inline;">
+      <button type="submit" class="text-red-600" onclick="return confirmDelete();">
+      <i class="fas fa-trash-alt"></i>
+      </button>
+      </form>
+      </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+<h3 class="text-xl font-bold mb-2 mt-6">Admins</h3>
+  <table class="min-w-full divide-y divide-gray-200">
+  <!--`username`, `password`, `role` -->
+  <thead class="bg-gray-50">
+  <tr>
+  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+  tracking-wider">Username</th>
+  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+  tracking-wider">Role</th>
+  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase
+  tracking-wider">Actions</th>
+  </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+  {% for admin in admins %}<tr>
+  <td class="px-6 py-4 whitespace-nowrap">{{ admin[1] }}</td>
+  <td class="px-6 py-4 whitespace-nowrap">{{ admin[3] }}</td>
+  <td class="px-6 py-4 whitespace-nowrap">
+  <a href="/edit-admin/{{ admin[0] }}" class="text-blue-600">
+  <i class="fas fa-edit"></i>
+  </a>
+  <form action="/delete-admin/{{ admin[0] }}" method="post" style="display: inline;">
+  <button type="submit" class="text-red-600" onclick="return confirmDelete();">
+  <i class="fas fa-trash-alt"></i>
+  </button>
+  </form>
+  </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+<script>
+function confirmDelete() {
+return confirm('Are you sure you want to delete this member?');
+}
+</script>
 {% endblock %}
