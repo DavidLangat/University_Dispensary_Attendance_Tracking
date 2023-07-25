@@ -49,13 +49,13 @@ def register():
         db.commit()
         flash('Registration successful!', 'success')
         return redirect('/register')
-    return render_template(‘studentreg.html')
+    return render_template('studentreg.html')
 
 
 
 # Route to handle user login
-    @app.route('/login', methods=['GET', 'POST'])
-    def login():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
         if request.method == 'POST':
      # Retrieve username and password from the login form
             username = request.form['username']
@@ -75,8 +75,8 @@ def register():
                 return redirect('/dashboard')
             else:
                 flash('Check your username or Password', 'error')
-            else:
-                flash('Check your username or Password', 'error')
+        else:
+            flash('Check your username or Password', 'error')
         return render_template('login.html')
 
 # Route to handle user logout
