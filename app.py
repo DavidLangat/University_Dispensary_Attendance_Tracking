@@ -173,7 +173,28 @@ def adminregister():
 
 
 # Route to display the admin edit form
-
+@app.route('/edit-admin/<int:admin_id>', methods=['GET', 'POST'])
+def edit_admin(admin_id):
+if 'username' not in session:
+return redirect('/login')
+# Fetch the admin data by ID
+cursor.execute('SELECT * FROM users WHERE id = %s', (admin_id,))
+admin = cursor.fetchone()
+if request.method == 'POST':
+# Get the updated data from the form
+username = request.form['username']
+role = request.form['role']
+# You can add more fields if necessary, e.g., name, email, etc.
+# Update the admin data in the database
+cursor.execute('UPDATE users SET username = %s, role = %s WHERE id = %s',
+(username, role, admin_id))
+db.commit()flash('Admin updated successfully!', 'success')
+return redirect('/view-members')
+return render_template('edit_admin.html', admin=admin)
+@app.route('/delete-admin/<int:admin_id>', methods=['POST'])
+def delete_admin(admin_id):
+if 'username' not in session:
+return redirect('/login')
 
 # Route to delete an admin by ID
 
