@@ -176,7 +176,15 @@ def adminregister():
 
 
 # Route to delete an admin by ID
-
+@app.route('/delete-admin/<int:admin_id>', methods=['POST'])
+def delete_admin(admin_id):
+if 'username' not in session:
+return redirect('/login')
+# Delete the admin from the database
+cursor.execute('DELETE FROM users WHERE id = %s', (admin_id,))
+db.commit()
+flash('Admin deleted successfully!', 'success')
+return redirect('/view-members')
 
 # Route to view all registered members (students and admins)
 
