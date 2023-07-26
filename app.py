@@ -222,96 +222,150 @@ def adminregister():
     return render_template('register.html')
 
 
-# Route to display reports for administrators
+@app.route('/reports', methods=['GET'])
+def reports():
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Retrieve all check-in records from the database
+    cursor.execute('SELECT students.name,check_ins.student_id, check_ins.reason, check_ins.check_in_time, check_ins.check_out_time FROM check_ins JOIN students ON check_ins.student_id = students.student_id ORDER BY check_in_time DESC LIMIT 10')
+    records = cursor.fetchall()
+
+    cursor.execute('SELECT * FROM users')
+    records2 = cursor.fetchall()
+
+    return render_template('reports.html', records=records, hello=records2)
 
 
-# route to get student name based on student ID
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.route('/get_student_name')
+def get_student_name():
+    student_id = request.args.get('student_id')
+
+    query = "SELECT name FROM students WHERE student_id = %s"
+    cursor.execute(query, (student_id,))
+    result = cursor.fetchone()
+
+    if result:
+        student_name = result[0]
+
+    else:
+        student_name = 'Student Not Found'
+
+    return jsonify({'name': student_name})
+
+
+
 
 
 # Route to display the admin edit form
 @app.route('/edit-admin/<int:admin_id>', methods=['GET', 'POST'])
 def edit_admin(admin_id):
-if 'username' not in session:
-return redirect('/login')
-# Fetch the admin data by ID
-cursor.execute('SELECT * FROM users WHERE id = %s', (admin_id,))
-admin = cursor.fetchone()
-if request.method == 'POST':
-# Get the updated data from the form
-username = request.form['username']
-role = request.form['role']
-# You can add more fields if necessary, e.g., name, email, etc.
-# Update the admin data in the database
-cursor.execute('UPDATE users SET username = %s, role = %s WHERE id = %s',
-(username, role, admin_id))
-db.commit()flash('Admin updated successfully!', 'success')
-return redirect('/view-members')
-return render_template('edit_admin.html', admin=admin)
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Fetch the admin data by ID
+    cursor.execute('SELECT * FROM users WHERE id = %s', (admin_id,))
+    admin = cursor.fetchone()
+
+    if request.method == 'POST':
+        # Get the updated data from the form
+        username = request.form['username']
+        role = request.form['role']
+
+        # Update the admin data in the database
+        cursor.execute('UPDATE users SET username = %s, role = %s WHERE id = %s',
+                       (username, role, admin_id))
+        db.commit()
+
+        flash('Admin updated successfully!', 'success')
+        return redirect('/view-members')
+
+    return render_template('edit_admin.html', admin=admin)
+
 @app.route('/delete-admin/<int:admin_id>', methods=['POST'])
 def delete_admin(admin_id):
-if 'username' not in session:
-return redirect('/login')
+    if 'username' not in session:
+        return redirect('/login')
 
-# Route to delete an admin by ID
-@app.route('/delete-admin/<int:admin_id>', methods=['POST'])
-def delete_admin(admin_id):
-if 'username' not in session:
-return redirect('/login')
-# Delete the admin from the database
-cursor.execute('DELETE FROM users WHERE id = %s', (admin_id,))
-db.commit()
-flash('Admin deleted successfully!', 'success')
-return redirect('/view-members')
+    # Delete the admin from the database
+    cursor.execute('DELETE FROM users WHERE id = %s', (admin_id,))
+    db.commit()
 
-# Route to view all registered members (students and admins)
+    flash('Admin deleted successfully!', 'success')
+    return redirect('/view-members')
+
 @app.route('/view-members')
 def view_members():
-if 'username' not in session:
-return redirect('/login')
-# Fetch all student members
-cursor.execute('SELECT * FROM students')
-students = cursor.fetchall()
-# Fetch all admin members
-cursor.execute('SELECT * FROM users')
-admins = cursor.fetchall()
-return render_template('view_members.html', students=students, admins=admins)
+    if 'username' not in session:
+        return redirect('/login')
 
-# Route to display the student edit form
+    # Fetch all student members
+    cursor.execute('SELECT * FROM students')
+    students = cursor.fetchall()
+
+    # Fetch all admin members
+    cursor.execute('SELECT * FROM users')
+    admins = cursor.fetchall()
+    
+    
+
+    return render_template('view_members.html', students=students, admins=admins)
+
 @app.route('/edit-student/<int:student_id>', methods=['GET', 'POST'])
 def edit_student(student_id):
-if 'username' not in session:
-return redirect('/login')
-# Fetch the student data by ID
-cursor.execute('SELECT * FROM students WHERE id = %s', (student_id,))
-student = cursor.fetchone()
-if request.method == 'POST':
-# Get the updated data from the form
-# NAME STUDENT ID DEPARTMENT EMAIL MOBILE NUMBER
-name = request.form['name']student_id = request.form['student_id']
-department = request.form['department']
-email = request.form['email']
-phone = request.form['phone']
-# Update the student data in the database
-cursor.execute('UPDATE students SET name = %s, student_id = %s, department = %s, email =
-%s, phone = %s WHERE student_id = %s',
-(name, student_id, department, email, phone, student_id))
-db.commit()
-flash('Student updated successfully!', 'success')
-return redirect('/view-members')
-return render_template('edit_student.html', student=student)
+    if 'username' not in session:
+        return redirect('/login')
 
-# Route to delete a student by ID
+    # Fetch the student data by ID
+    cursor.execute('SELECT * FROM students WHERE id = %s', (student_id,))
+    student = cursor.fetchone()
+
+    if request.method == 'POST':
+        # Get the updated data from the form
+       # NAME	STUDENT ID	DEPARTMENT	EMAIL	MOBILE NUMBER 
+        name = request.form['name']
+        student_id = request.form['student_id']
+        department = request.form['department']
+        email = request.form['email']
+        phone = request.form['phone']
+
+        # Update the student data in the database
+        cursor.execute('UPDATE students SET name = %s, student_id = %s, department = %s, email = %s, phone = %s WHERE student_id = %s',
+                       (name, student_id, department, email, phone, student_id))
+        db.commit()
+        flash('Student updated successfully!', 'success')
+        return redirect('/view-members')
+
+    return render_template('edit_student.html', student=student)
+
 @app.route('/delete-student/<int:student_id>', methods=['POST'])
 def delete_student(student_id):
-if 'username' not in session:
-return redirect('/login')
-# Delete the student from the database
-cursor.execute('DELETE FROM students WHERE id = %s', (student_id,))
-db.commit()
-flash('Student deleted successfully!', 'success')
-return redirect('/view-members')
-# Route to display the admin profile details
+    if 'username' not in session:
+        return redirect('/login')
 
+    # Delete the student from the database
+    cursor.execute('DELETE FROM students WHERE id = %s', (student_id,))
+    db.commit()
+
+    flash('Student deleted successfully!', 'success')
+    return redirect('/view-members')
+
+# Route to display the admin profile details
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        return redirect('/login')
+
+    # Get the admin's profile details
+    cursor.execute('SELECT * FROM users WHERE username = %s', [session['username']])
+    admin = cursor.fetchone()
+
+    return render_template('profile.html', admin=admin)
 # Route to handle admin password change
 @app.route('/change-password', methods=['GET', 'POST'])
 def change_password():
