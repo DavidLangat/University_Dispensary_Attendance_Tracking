@@ -61,8 +61,11 @@ python app.py
 
 ## Contributors
 1.David Langat
+
 2.Ian James
+
 3.Bruno Mulwa
+
 4.Stacy Karara
 
 
