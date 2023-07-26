@@ -60,10 +60,10 @@ python app.py
 4. Generate reports for analysis and decision-making.
 
 ## Contributors
-1.
-2.
-3.
-4.
+1.David Langat
+2.Ian James
+3.Bruno Mulwa
+4.Stacy Karara
 
 
 ## License
