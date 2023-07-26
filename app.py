@@ -136,21 +136,77 @@ def dashboard():
                            todays_attendance=todays_attendance, records=records)
 
 
-# Route to display the check-in form
+@app.route('/check-in', methods=['GET'])
+def check_in_form():
+    if 'username' not in session:
+        return redirect('/login')
+
+    return render_template('form.html')
 
 
+@app.route('/submit', methods=['POST'])
+def submit():
+    if 'username' not in session:
+        return redirect('/login')
 
-# Route to handle check-in form submission
+    name = request.form['name']
+    student_id = request.form['student_id']
+    reason = request.form['reason']
+
+    # Check if the student exists
+    cursor.execute('SELECT * FROM students WHERE student_id = %s', (student_id,))
+    student = cursor.fetchone()
+
+    if not student:
+        flash('Student does not exist!', 'error')
+        return redirect('/check-in')
+
+    cursor.execute(
+        'INSERT INTO check_ins (name, student_id, reason) VALUES (%s, %s, %s)', (name, student_id, reason))
+    db.commit()
+
+    flash('Check-in successful!', 'success')
+    return redirect('/check-in')
 
 
-# Route to display the check-out form
+@app.route('/check-out', methods=['GET'])
+def check_out_form():
+    if 'username' not in session:
+        return redirect('/login')
+
+    return render_template('checkout.html')
 
 
-# Route to handle check-out form submission
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    if 'username' not in session:
+        return redirect('/login')
+
+    student_id = request.form['student_id']
+
+    cursor.execute(
+        'UPDATE check_ins SET check_out_time = CURRENT_TIMESTAMP WHERE student_id = %s and check_out_time IS NULL', (student_id,))
+    db.commit()
+    affected_rows = cursor.rowcount
+
+    if affected_rows == 0:
+        flash('Checkout failed. Student not found or already checked out.', 'error')
+    else:
+        flash('Check-out successful!', 'success')
+
+    return redirect('/check-out')
 
 
-# Route to display medical records of a specific student
+@app.route('/medical-records/<student_id>', methods=['GET'])
+def medical_records(student_id):
+    if 'username' not in session:
+        return redirect('/login')
 
+    cursor.execute(
+        'SELECT * FROM check_ins WHERE student_id = %s', (student_id,))
+    records = cursor.fetchall()
+
+    return render_template('medical_records.html', records=records)
 
 # Route to handle admin registration
 @app.route('/adminregister', methods=['GET', 'POST'])
