@@ -3,4 +3,58 @@
 
 {% block content %}
 
+<div class="p-8 lg:w-1/2 mx-auto">
+  <div class="bg-white rounded-t-lg p-8">
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+  <div class=" px-4 py-6 bg-white rounded-r-lg flex justify-between items-center w-full border border-l-transparent border-gray-200">
+    <p class=" font-black text-xs text-center w-full
+    {% if message == 'Check-in successful!' %}
+  text-green-600
+  {% else %}
+  text-red-600
+  {% endif %}
+  "> {{ message }}</p>
+  
+  </div>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+    <p class="text-center text-sm text-gray-400 font-light">Check-in</p>
+    <form action="/submit" method="POST">
+      <div class="mb-4">
+        <label for="student_id" class="block font-bold mb-2">Student ID:</label>
+        <input type="text" id="student_id" name="student_id" required class="border border-gray-300 rounded px-4 py-2 w-full" oninput="getStudentName(this.value)">
+      </div>
+      <div class="mb-4">
+        <label for="name" class="block font-bold mb-2">Name:</label>
+        <input type="text" id="name" name="name" required class="border border-gray-300 rounded px-4 py-2 w-full" readonly>
+      </div>
+      <div class="mb-4">
+        <label for="reason" class="block font-bold mb-2">Reason for Visit:</label>
+        <textarea id="reason" name="reason" required class="border border-gray-300 rounded px-4 py-2 w-full"></textarea>
+      </div>
+      <button type="submit" class="block w-full py-2 px-4 text-sm uppercase rounded bg-red-500 hover:bg-red-600 text-white font-medium shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
+        Check-in</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function getStudentName(studentId) {
+    fetch(`/get_student_name?student_id=${studentId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.name) {
+          document.getElementById('name').value = data.name;
+        } else {
+          document.getElementById('name').value = 'da';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+</script>
 {% endblock %}
